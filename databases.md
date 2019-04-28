@@ -1,5 +1,28 @@
 !>注意：timestamps(created_at、updated_at)、deleted_at 表示创建、修改、创建时间
 
+## banner
+
+表名 banners (timestamps)
+
+| 字段名      | 类型             | 是否为空 | 描述                                   |
+| ----------- | ---------------- | -------- | -------------------------------------- |
+| id          | int(10) unsigned | NO       | PRI                                    |
+| type        | tinyint(4)       | NO       | 类型 1 校圈 2 云课堂 3 发现 4 生活精选 |
+| sender_type | tinyint(4)       | NO       | 发送人类型                             |
+| sender      | varchar(191)     | YES      | 发送人部门显示                         |
+| title       | varchar(191)     | YES      | 轮播图标题                             |
+| weight      | int(11)          | NO       | 权重                                   |
+| user_id     | int(11)          | NO       | 用户 id                                |
+| link_url    | varchar(255)     | YES      | 链接地址                               |
+| image_url   | varchar(255)     | NO       | 链接地址                               |
+| content     | text             | YES      | 描述内用                               |
+
+```php
+    class{
+        user:belongsTo();//发布者
+    }
+```
+
 ## 班级
 
 表名 clazzs (timestamps)
@@ -529,6 +552,36 @@
 | schedule_id | int(11)          | NO       | `for-key` |
 | mark_id     | int(11)          | NO       | `for-key` |
 | avg         | decimal(4,2)     | NO       | 平均分    |
+
+## 校园通知（动态校园）
+
+表名 school_notices (timestamps、deleted_at)
+
+| 字段名       | 类型                | 是否为空 | 描述                |
+| ------------ | ------------------- | -------- | ------------------- |
+| id           | int(10) unsigned    | NO       | PRI                 |
+| title        | varchar(191)        | NO       | 公告标题            |
+| from         | varchar(191)        | NO       | 消息来源            |
+| to_type      | json                | NO       | 指定对象            |
+| type         | tinyint(4)          | NO       | 消息类型            |
+| user_id      | int(11)             | YES      | 发布者 `for-key`    |
+| content      | longtext            | YES      | 内容                |
+| extra        | json                | YES      | 预留                |
+| sort         | int(11)             | NO       | 权重                |
+| url_name     | varchar(191)        | YES      | 链接名称            |
+| url          | varchar(191)        | YES      | 链接地址            |
+| jump_type    | varchar(191)        | YES      | MUL                 |
+| jump_id      | bigint(20) unsigned | YES      |                     |
+| presended_at | timestamp           | YES      | 预定发送时间        |
+| status       | tinyint(4)          | NO       |                     |
+| top          | tinyint(4)          | NO       | 是否置顶 true false |
+
+```php
+    class{
+        extedModel:morphTo();//jump
+        schoolNoticeType:belongsTo();//类型
+    }
+```
 
 ## 学校
 
