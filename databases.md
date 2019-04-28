@@ -401,6 +401,31 @@
     }
 ```
 
+## 云课堂相关通知表
+
+表名 notifications (timestamps、deleted_at)
+
+| 字段名        | 类型                | 是否为空 | 描述           |
+| ------------- | ------------------- | -------- | -------------- |
+| id            | int(10) unsigned    | NO       | PRI            |
+| course_id     | int(10)             | YES      | 课程 `for-key` |
+| from_id       | bigint(20)          | NO       | 来源 `for-key` |
+| from_type     | varchar(191)        | NO       | 来源类型       |
+| role_id       | int(11)             | NO       | 接收这类型     |
+| type          | tinyint(4)          | NO       | `参考配置`     |
+| relative_type | varchar(191)        | NO       | 主模型         |
+| relative_id   | bigint(20) unsigned | NO       | 主模型 id      |
+| content       | varchar(255)        | YES      | 内容           |
+| status        | tinyint(4)          | YES      | 阅读状态       |
+
+```php
+    class{
+        from:morphTo();//来源
+        relative:morphTo();//主模型信息
+        course:belongsTo();//课程
+    }
+```
+
 ## 问卷
 
 表名 qss (timestamps、deleted_at)
