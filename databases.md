@@ -1,4 +1,58 @@
-!>注意：timestamps(created_at、updated_at)、deleted_at 表示创建、修改、创建时间
+!> 注意：timestamps(created_at、updated_at)、deleted_at 表示创建、修改、创建时间
+
+## 考勤学生关系
+
+表名 attendance_students (timestamps)
+
+| 字段名        | 类型             | 是否为空 | 描述 |
+| ------------- | ---------------- | -------- | ---- |
+| id            | int(10) unsigned | NO       | PRI  |
+| student_id    | int(11)          | NO       |      |
+| attendance_id | int(11)          | NO       |      |
+| status        | tinyint(4)       | NO       |      |
+
+## 考勤详情表
+
+表名 attendance_details (timestamps)
+
+| 字段名        | 类型             | 是否为空 | 描述           |
+| ------------- | ---------------- | -------- | -------------- |
+| id            | int(10) unsigned | NO       | PRI            |
+| attendance_id | int(11)          | NO       | 考勤 `for-key` |
+| total         | tinyint(4)       | NO       | 总人数         |
+| attended_num  | tinyint(4)       | NO       | 实到人数       |
+| attended      | json             | YES      | 出勤           |
+| absented      | json             | YES      | 未出席         |
+| delayed       | json             | YES      | 迟到           |
+| unattended    | json             | YES      | 请假           |
+| leave_early   | json             | YES      | 早退           |
+
+## 考勤
+
+表名 attendances (timestamps、deleted_at)
+
+| 字段名             | 类型             | 是否为空 | 描述                |
+| ------------------ | ---------------- | -------- | ------------------- |
+| id                 | int(10) unsigned | NO       | PRI                 |
+| course_id          | int(10) unsigned | NO       | 课程 `for-key`      |
+| course_schedule_id | int(11)          | NO       | 进度 `for-key`      |
+| week_num           | tinyint(4)       | NO       | 周次                |
+| day_of_week        | tinyint(4)       | NO       |                     |
+| course_count       | varchar(191)     | NO       | 第几节              |
+| uuid               | char(36)         | NO       | MUL                 |
+| started_at         | timestamp        | YES      | 开始时间            |
+| status             | tinyint(4)       | NO       | 是否开启 true false |
+| type               | tinyint(4)       | NO       |                     |
+| random_pick_num    | tinyint(4)       | NO       | 随机抽点人数        |
+
+```php
+    class{
+        students:belongsToMany();//学生
+        delayedStudents:belongsToMany();//学生
+        attendanceDetail:hasOne();//考勤详情
+        course:belongsTo();//课程
+    }
+```
 
 ## banner
 
@@ -91,7 +145,7 @@
     }
 ```
 
-## 课程通知
+## 课程评价标签关系
 
 表名 course_marks (timestamps、deleted_at)
 
@@ -120,7 +174,7 @@
     }
 ```
 
-## 课程进度
+## 课程进度话题讨论
 
 表名 course_schedule_interactions (timestamps)
 
@@ -170,9 +224,9 @@
     }
 ```
 
-## 课程学生关系表
+## 课程学生关系
 
-表名 course_student
+表名 course_student (timestamps)
 
 | 字段名      | 类型             | 是否为空 | 描述      |
 | ----------- | ---------------- | -------- | --------- |
@@ -333,7 +387,7 @@
     }
 ```
 
-## 学生上交作业表
+## 学生上交作业
 
 表名 hand_in_homeworks (timestamps、deleted_at)
 
@@ -357,7 +411,7 @@
     }
 ```
 
-## 作业题关系表
+## 作业题关系
 
 表名 homework_question (timestamps)
 
@@ -424,7 +478,7 @@
     }
 ```
 
-## 云课堂相关通知表
+## 云课堂相关通知
 
 表名 notifications (timestamps、deleted_at)
 
@@ -481,7 +535,7 @@
     }
 ```
 
-## 问卷题关系表
+## 问卷题关系
 
 表名 qs_qs_question (timestamps)
 
@@ -542,7 +596,7 @@
 | from             | int(10)          | YES      |      |
 | from_type        | tinyint(4)       | YES      |      |
 
-## 课程进度评价语关系表
+## 课程进度评价语关系
 
 表名 schedule_marks (timestamps、deleted_at)
 
